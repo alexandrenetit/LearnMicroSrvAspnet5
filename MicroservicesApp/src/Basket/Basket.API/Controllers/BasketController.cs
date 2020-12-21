@@ -26,14 +26,7 @@ namespace Basket.API.Controllers
         public async Task<ActionResult<BasketCart>> GetBasket(string userName)
         {
             var basket = await _repository.GetBasket(userName);
-
-            if (basket == null)
-            {
-                _logger.LogError($"Basket with username: {userName}, not found.");
-                return NotFound();
-            }
-
-            return Ok(basket);
+            return Ok(basket ?? new BasketCart(userName));
         }
 
         [HttpPost]
