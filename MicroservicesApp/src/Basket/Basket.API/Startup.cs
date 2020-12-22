@@ -1,8 +1,10 @@
+using AutoMapper;
 using Basket.API.Data;
 using Basket.API.Data.Interfaces;
 using Basket.API.Repository;
 using Basket.API.Repository.Interfaces;
 using EventBusRabbitMQ;
+using EventBusRabbitMQ.Producer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +36,7 @@ namespace Basket.API
 
             services.AddTransient<IBasketContext, BasketContext>();
             services.AddTransient<IBasketRepository, BasketRepository>();
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddSwaggerGen(c =>
             {
@@ -59,6 +62,8 @@ namespace Basket.API
 
                 return  new RabbitMQConnection(factory);
             });
+
+            services.AddSingleton<EventBustRabbitMQProducer>();
 
             services.AddControllers();
         }
