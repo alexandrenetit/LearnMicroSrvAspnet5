@@ -1,9 +1,8 @@
-﻿using Ordering.Core.Entities.Base;
-
-namespace Ordering.Core.Entities
+﻿namespace Ordering.Application.Responses
 {
-    public class Order : Entity
+    public class OrderResponse
     {
+        public int Id { get; set; }
         public string UserName { get; set; }
         public decimal TotalPrice { get; set; }
 
@@ -21,13 +20,6 @@ namespace Ordering.Core.Entities
         public string CardNumber { get; set; }
         public string Expiration { get; set; }
         public string CVV { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
-    }
-
-    public enum PaymentMethod
-    {
-        CreditCard = 1,
-        DebitCard = 2,
-        Paypal = 3
+        public int PaymentMethod { get; set; }
     }
 }
