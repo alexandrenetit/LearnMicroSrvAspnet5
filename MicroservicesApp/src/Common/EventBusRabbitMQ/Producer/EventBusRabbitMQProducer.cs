@@ -6,11 +6,11 @@ using RabbitMQ.Client;
 
 namespace EventBusRabbitMQ.Producer
 {
-    public class EventBustRabbitMQProducer
+    public class EventBusRabbitMQProducer
     {
         private readonly IRabbitMQConnection _connection;
 
-        public EventBustRabbitMQProducer(IRabbitMQConnection connection)
+        public EventBusRabbitMQProducer(IRabbitMQConnection connection)
         {
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
         }

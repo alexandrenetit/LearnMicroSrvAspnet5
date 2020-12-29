@@ -42,10 +42,8 @@ namespace Ordering.API.RabbitMQ
 
             consumer.Received += ReceivedEvent;
 
-            channel.BasicConsume(queue: EventBusConstants.BasketCheckoutQueue, autoAck: true, consumer: consumer, noLocal: false, 
+            channel.BasicConsume(queue: EventBusConstants.BasketCheckoutQueue, autoAck: true, consumer: consumer, noLocal: false,
                 exclusive: false, arguments: null);
-
-
         }
 
         private async void ReceivedEvent(object sender, BasicDeliverEventArgs e)
@@ -56,7 +54,10 @@ namespace Ordering.API.RabbitMQ
                 var basketCheckoutEvent = JsonConvert.DeserializeObject<BasketCheckoutEvent>(message);
 
                 var command = _mapper.Map<CheckoutOrderCommand>(basketCheckoutEvent);
+                await _mediator.Send(command);
             }
         }
+
+        public void Disconnect() => _connection.Dispose();
     }
 }

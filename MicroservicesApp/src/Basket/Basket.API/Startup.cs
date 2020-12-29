@@ -63,7 +63,7 @@ namespace Basket.API
                 return  new RabbitMQConnection(factory);
             });
 
-            services.AddSingleton<EventBustRabbitMQProducer>();
+            services.AddSingleton<EventBusRabbitMQProducer>();
 
             services.AddControllers();
         }

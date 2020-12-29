@@ -1,7 +1,6 @@
 using System.Reflection;
 using AutoMapper;
 using EventBusRabbitMQ;
-using EventBusRabbitMQ.Producer;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Ordering.API.Extensions;
+using Ordering.API.RabbitMQ;
 using Ordering.Application.Handlers;
 using Ordering.Core.Repositories;
 using Ordering.Core.Repositories.Base;
@@ -50,7 +51,7 @@ namespace Ordering.API
             // Add MediatR
             services.AddMediatR(typeof(CheckoutOrderHandler).GetTypeInfo().Assembly);
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Order API", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Order API", Version = "v1" }); });
 
             services.AddSingleton<IRabbitMQConnection>(sp =>
             {
@@ -72,7 +73,7 @@ namespace Ordering.API
                 return new RabbitMQConnection(factory);
             });
 
-            services.AddSingleton<EventBustRabbitMQProducer>();
+            services.AddSingleton<EventBusRabbitMQConsumer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,6 +92,9 @@ namespace Ordering.API
             {
                 endpoints.MapControllers();
             });
+
+            //Initilize Rabbit Listener in ApplicationBuilderExtentions
+            app.UseRabbitListener();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
